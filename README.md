@@ -1,4 +1,4 @@
-#  Dockerized Odoo from official .deb packages
+# Dockerized Odoo from official .deb packages
 
 This project builds a local Docker image from **any compatible Odoo `.deb`** you place in `./deb/`. 
 
@@ -19,7 +19,7 @@ It has been tested with Odoo 18 and Odoo 19, both Community and Enterprise editi
 ├── config/
 │   └── odoo.conf
 └── deb/
-    └── <your Odoo Enterprise .deb>
+    └── <your Odoo .deb>
 ```
 
 ## Basic usage
