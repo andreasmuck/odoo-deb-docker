@@ -1,7 +1,9 @@
-# Version-neutral Dockerized Odoo Enterprise
+#  Dockerized Odoo from official .deb packages
 
 This project builds a local Docker image from **any compatible Odoo `.deb`** you place in `./deb/`. It is a personal project 
-I use to quickly spin up test Odoo test installations. It is not meant for productive use. Different ports and project names can be used to install different versions side by side.
+I use it to quickly spin up Odoo test installation. It is not meant for productive use. Different ports and project names can be used to install different versions side by side.
+
+This repo does not distribute Odoo or Odoo Enterprise. Obtain the appropriate .deb package directly from Odoo. Odoo Enterprise requires a valid Odoo Enterprise subscription.
 
 It has been tested with Odoo 18 and Odoo 19, community and enterprise version.
 
@@ -21,7 +23,7 @@ It has been tested with Odoo 18 and Odoo 19, community and enterprise version.
 
 ## Basic usage
 
-1. Copy your Enterprise `.deb` into `deb/`.
+1. Copy your Odoo `.deb` into `deb/`.
 
 2. Create `.env`:
 
@@ -137,6 +139,7 @@ Persistent data remains in:
 ```text
 postgres-data
 odoo-filestore
+odoo-config
 ```
 
 scoped by the Compose project name.
@@ -201,3 +204,4 @@ docker compose exec odoo sh -c 'ls -l /usr/bin/odoo*'
 - PostgreSQL is not published to the Mac host.
 - Odoo is exposed only on `127.0.0.1`.
 - Do not deploy this configuration unchanged to production.
+- Odoo is a trademark of Odoo S.A. This project is independent and is not affiliated with or endorsed by Odoo S.A.
