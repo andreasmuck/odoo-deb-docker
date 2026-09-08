@@ -2,7 +2,7 @@
 
 This project builds a local Docker image from **any compatible Odoo `.deb`** you place in `./deb/`. 
 
-It is a personal project I use to quickly spin up Odoo test installations. It is not meant for productive use. Different ports and project names can be used to install different versions side by side.
+It is a personal project I use to quickly spin up Odoo test installations. It is not meant for production use. Different ports and project names can be used to install different versions side by side.
 
 This repo does not distribute Odoo or Odoo Enterprise. Obtain the appropriate `.deb` package directly from Odoo. Odoo Enterprise requires a valid Odoo Enterprise subscription.
 
@@ -144,6 +144,8 @@ odoo-config
 ```
 
 scoped by the Compose project name.
+
+The `odoo-config` volume is initialized from `config/odoo.conf` when first created. Later changes to the repository copy of `config/odoo.conf` do not overwrite an existing persistent configuration volume.
 
 ## Updating Odoo
 
