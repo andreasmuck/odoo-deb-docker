@@ -1,0 +1,6 @@
+*
+!Dockerfile
+!config/
+!config/odoo.conf
+!deb/
+!deb/**

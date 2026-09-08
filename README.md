@@ -1,0 +1,203 @@
+# Version-neutral Dockerized Odoo Enterprise
+
+This project builds a local Docker image from **any compatible Odoo `.deb`** you place in `./deb/`. It is a personal project 
+I use to quickly spin up test Odoo test installations. It is not meant for productive use. Different ports and project names can be used to install different versions side by side.
+
+It has been tested with Odoo 18 and Odoo 19, community and enterprise version.
+
+## Files
+
+```text
+.
+├── Dockerfile
+├── compose.yml
+├── .env.example
+├── .dockerignore
+├── config/
+│   └── odoo.conf
+└── deb/
+    └── <your Odoo Enterprise .deb>
+```
+
+## Basic usage
+
+1. Copy your Enterprise `.deb` into `deb/`.
+
+2. Create `.env`:
+
+```bash
+cp .env.example .env
+```
+
+3. Edit `.env`, for example:
+
+```env
+COMPOSE_PROJECT_NAME=odoo18e
+ODOO_DEB=odoo_18.0+e.latest_all.deb
+ODOO_VERSION=18
+ODOO_PORT=8069
+```
+
+4. Build:
+
+```bash
+docker compose build
+```
+
+5. Start:
+
+```bash
+docker compose up -d
+```
+
+6. Watch logs:
+
+```bash
+docker compose logs -f odoo
+```
+
+7. Open:
+
+```text
+http://localhost:8069
+```
+
+The database manager is:
+
+```text
+http://localhost:8069/web/database/manager
+```
+
+## Alternative port
+
+Set:
+
+```env
+ODOO_PORT=8079
+```
+
+Then open:
+
+```text
+http://localhost:8079
+```
+
+The container still listens internally on port `8069`; only the host port changes.
+
+## Running Odoo 18 and 19 side by side
+
+The easiest method is to use **two copies of this project**, or two environment files with different Compose project names.
+
+Example Odoo 18:
+
+```env
+COMPOSE_PROJECT_NAME=odoo18-test
+ODOO_DEB=odoo_18.0+e.latest_all.deb
+ODOO_VERSION=18
+ODOO_PORT=8069
+```
+
+Example Odoo 19:
+
+```env
+COMPOSE_PROJECT_NAME=odoo19-test
+ODOO_DEB=odoo_19.0+e.latest_all.deb
+ODOO_VERSION=19
+ODOO_PORT=8079
+```
+
+Start each from its own project directory:
+
+```bash
+docker compose up -d
+```
+
+Because `COMPOSE_PROJECT_NAME` differs, Docker automatically creates separate project-scoped resources such as:
+
+```text
+odoo18-test_postgres-data
+odoo18-test_odoo-filestore
+
+odoo19-test_postgres-data
+odoo19-test_odoo-filestore
+```
+
+So Odoo 18 and 19 do not share PostgreSQL data or filestore contents.
+
+## Persistence
+
+Stopping/removing containers does not delete data:
+
+```bash
+docker compose down
+```
+
+Persistent data remains in:
+
+```text
+postgres-data
+odoo-filestore
+```
+
+scoped by the Compose project name.
+
+## Destructive reset
+
+This deletes the PostgreSQL database and Odoo filestore for the current Compose project:
+
+```bash
+docker compose down -v
+```
+
+Use it only when you intentionally want a completely fresh environment.
+
+## Restore an Odoo Online backup
+
+Open:
+
+```text
+http://localhost:${ODOO_PORT}/web/database/manager
+```
+
+Choose **Restore Database**, upload the Odoo Online ZIP as-is, give it a test database name, and enable **Neutralize**.
+
+Do not point a newer major Odoo version directly at an older-version database. Upgrade the database first.
+
+## Useful commands
+
+PostgreSQL shell:
+
+```bash
+docker compose exec db psql -U odoo -d postgres
+```
+
+List databases:
+
+```bash
+docker compose exec db psql -U odoo -d postgres -c '\l'
+```
+
+Enter the Odoo container:
+
+```bash
+docker compose exec odoo bash
+```
+
+Inspect installed Odoo package:
+
+```bash
+docker compose exec odoo dpkg -l | grep odoo
+```
+
+Check Odoo executable:
+
+```bash
+docker compose exec odoo sh -c 'ls -l /usr/bin/odoo*'
+```
+
+## Notes
+
+- PostgreSQL runs in Docker too.
+- PostgreSQL is not published to the Mac host.
+- Odoo is exposed only on `127.0.0.1`.
+- Do not deploy this configuration unchanged to production.

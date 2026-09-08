@@ -1,0 +1,46 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# vi / vim swap & backup files
+*.swp
+*.swo
+*.swn
+*.swm
+*~
+.*.swp
+.*.swo
+
+# Odoo .deb packages
+deb/*
+!deb/.gitkeep
+
+# Docker / local build artifacts
+*.log
+*.pid
+*.tmp
+*.temp
+tmp/
+build/
+dist/
+
+# Python packaging / caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Local generated source/build directories, if used
+src/*
+!src/.gitkeep
+
+# IDE/editor metadata
+.vscode/
+.idea/
