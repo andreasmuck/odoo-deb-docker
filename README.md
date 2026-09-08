@@ -1,9 +1,10 @@
 #  Dockerized Odoo from official .deb packages
 
-This project builds a local Docker image from **any compatible Odoo `.deb`** you place in `./deb/`. It is a personal project 
-I use it to quickly spin up Odoo test installation. It is not meant for productive use. Different ports and project names can be used to install different versions side by side.
+This project builds a local Docker image from **any compatible Odoo `.deb`** you place in `./deb/`. 
 
-This repo does not distribute Odoo or Odoo Enterprise. Obtain the appropriate .deb package directly from Odoo. Odoo Enterprise requires a valid Odoo Enterprise subscription.
+It is a personal project I use it to quickly spin up Odoo test installations. It is not meant for productive use. Different ports and project names can be used to install different versions side by side.
+
+This repo does not distribute Odoo or Odoo Enterprise. Obtain the appropriate `.deb` package directly from Odoo. Odoo Enterprise requires a valid Odoo Enterprise subscription.
 
 It has been tested with Odoo 18 and Odoo 19, community and enterprise version.
 
@@ -84,7 +85,7 @@ Then open:
 http://localhost:8079
 ```
 
-The container still listens internally on port `8069`; only the host port changes.
+The container still listens internally on port 8069, only the host port changes.
 
 ## Running Odoo 18 and 19 side by side
 
@@ -144,6 +145,42 @@ odoo-config
 
 scoped by the Compose project name.
 
+## Updating Odoo
+
+To update Odoo within the same major version, download a newer `.deb` package and place it in `deb/`.
+
+Update the corresponding `.env` file, for example:
+
+```env
+COMPOSE_PROJECT_NAME=odoo18-test
+ODOO_DEB=odoo_18.0+e.20260920_all.deb
+ODOO_VERSION=18-20260920
+ODOO_PORT=8069
+```
+
+Keep COMPOSE_PROJECT_NAME unchanged. It identifies the Docker Compose environment and therefore preserves the existing PostgreSQL, filestore, and Odoo configuration volumes.
+Rebuild the Odoo image:
+
+```bash
+docker compose build --no-cache
+```
+
+Then recreate/start the containers:
+
+```bash
+docker compose up -d
+```
+
+The application image is replaced, while the persistent volumes remain intact.
+Do not use:
+
+```bash
+docker compose down -v
+```
+
+during an update, because -v removes the persistent volumes.
+Changing to a new Odoo major version, such as Odoo 18 to Odoo 19, requires a database upgrade. Do not start a newer major Odoo version directly against an older-version database.
+
 ## Destructive reset
 
 This deletes the PostgreSQL database and Odoo filestore for the current Compose project:
@@ -202,6 +239,7 @@ docker compose exec odoo sh -c 'ls -l /usr/bin/odoo*'
 
 - PostgreSQL runs in Docker too.
 - PostgreSQL is not published to the Mac host.
+- The default PostgreSQL password is intentionally simple because PostgreSQL is not published outside the private Docker Compose network. If you expose the database service or use this setup as the basis for a hardened deployment, change the PostgreSQL password and the corresponding `db_password` in `odoo.conf`.
 - Odoo is exposed only on `127.0.0.1`.
 - Do not deploy this configuration unchanged to production.
 - Odoo is a trademark of Odoo S.A. This project is independent and is not affiliated with or endorsed by Odoo S.A.
