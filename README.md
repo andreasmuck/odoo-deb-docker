@@ -159,6 +159,7 @@ ODOO_PORT=8069
 ```
 
 Keep `COMPOSE_PROJECT_NAME` unchanged. It identifies the Docker Compose environment and therefore preserves the existing PostgreSQL, filestore, and Odoo configuration volumes.
+
 Rebuild the Odoo image:
 
 ```bash
@@ -172,6 +173,7 @@ docker compose up -d
 ```
 
 The application image is replaced, while the persistent volumes remain intact.
+
 Do not use:
 
 ```bash
@@ -179,6 +181,7 @@ docker compose down -v
 ```
 
 during an update, because `-v` removes the persistent volumes.
+
 Changing to a new Odoo major version, such as Odoo 18 to Odoo 19, requires a database upgrade. Do not start a newer major Odoo version directly against an older-version database.
 
 ## Destructive reset
