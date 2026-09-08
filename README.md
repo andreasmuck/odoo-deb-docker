@@ -2,11 +2,11 @@
 
 This project builds a local Docker image from **any compatible Odoo `.deb`** you place in `./deb/`. 
 
-It is a personal project I use it to quickly spin up Odoo test installations. It is not meant for productive use. Different ports and project names can be used to install different versions side by side.
+It is a personal project I use to quickly spin up Odoo test installations. It is not meant for productive use. Different ports and project names can be used to install different versions side by side.
 
 This repo does not distribute Odoo or Odoo Enterprise. Obtain the appropriate `.deb` package directly from Odoo. Odoo Enterprise requires a valid Odoo Enterprise subscription.
 
-It has been tested with Odoo 18 and Odoo 19, community and enterprise version.
+It has been tested with Odoo 18 and Odoo 19, both Community and Enterprise editions.
 
 ## Files
 
@@ -158,7 +158,7 @@ ODOO_VERSION=18-20260920
 ODOO_PORT=8069
 ```
 
-Keep COMPOSE_PROJECT_NAME unchanged. It identifies the Docker Compose environment and therefore preserves the existing PostgreSQL, filestore, and Odoo configuration volumes.
+Keep `COMPOSE_PROJECT_NAME` unchanged. It identifies the Docker Compose environment and therefore preserves the existing PostgreSQL, filestore, and Odoo configuration volumes.
 Rebuild the Odoo image:
 
 ```bash
@@ -178,12 +178,12 @@ Do not use:
 docker compose down -v
 ```
 
-during an update, because -v removes the persistent volumes.
+during an update, because `-v` removes the persistent volumes.
 Changing to a new Odoo major version, such as Odoo 18 to Odoo 19, requires a database upgrade. Do not start a newer major Odoo version directly against an older-version database.
 
 ## Destructive reset
 
-This deletes the PostgreSQL database and Odoo filestore for the current Compose project:
+This deletes the PostgreSQL database, Odoo filestore, and persistent Odoo configuration for the current Compose project:
 
 ```bash
 docker compose down -v
