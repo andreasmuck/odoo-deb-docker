@@ -238,7 +238,7 @@ Reset all users passwords for testing:
 
 
 ```python
-docker compose exec -T odoo odoo shell \ -c /etc/odoo/odoo.conf \ -d your_database < scripts/reset_passwords.py
+cat scripts/reset_passwords.py | docker compose exec -T odoo odoo shell -c /etc/odoo/odoo.conf -d your_database
 ```
 
 Inspect installed Odoo package:
