@@ -256,7 +256,7 @@ docker compose exec odoo sh -c 'ls -l /usr/bin/odoo*'
 ## Notes
 
 - PostgreSQL runs in Docker too.
-- PostgreSQL is not published to the Mac host.
+- PostgreSQL is not published to the host.
 - The default PostgreSQL password is intentionally simple because PostgreSQL is not published outside the private Docker Compose network. If you expose the database service or use this setup as the basis for a hardened deployment, change the PostgreSQL password and the corresponding `db_password` in `odoo.conf`.
 - Odoo is exposed only on `127.0.0.1`.
 - Do not deploy this configuration unchanged to production.
