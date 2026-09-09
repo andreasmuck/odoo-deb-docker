@@ -228,6 +228,19 @@ Enter the Odoo container:
 docker compose exec odoo bash
 ```
 
+Enter the Odoo shell:
+
+```bash
+docker compose exec odoo odoo shell -c /etc/odoo/odoo.conf -d your_database
+```
+
+Reset all users passwords for testing:
+
+
+```python
+docker compose exec -T odoo odoo shell \ -c /etc/odoo/odoo.conf \ -d your_database < scripts/reset_passwords.py
+```
+
 Inspect installed Odoo package:
 
 ```bash
